@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Signin from '../components/Signin'
 import Signup from '../components/Signup'
 
 const Login = ({ setToken }) => {
+    const [isUserNew, setIsUserNew] = useState(false);
+
+    const toggleForm = () => {
+        setIsUserNew(!isUserNew)
+    }
+
     return (
-        <div>
-           <Signin  setToken={setToken} />
-           <Signup  setToken={setToken} />
-        </div>
+        (
+            isUserNew ? 
+           <Signup  setToken={setToken} toggleForm={toggleForm}/> :
+           <Signin  setToken={setToken} toggleForm={toggleForm}/>
+        )
     )
 }
 
