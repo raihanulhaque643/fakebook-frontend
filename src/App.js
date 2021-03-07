@@ -9,6 +9,7 @@ import {
 import AllOpinions from "./pages/AllOpinions";
 import Login from "./pages/Login";
 import MyOpinions from "./pages/MyOpinions";
+import Navbar from './components/Navbar'
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -22,6 +23,9 @@ function App() {
   return (
     <div className="">
       <Router>
+
+        <Navbar setToken={setToken} />
+
         <Switch>
           <Route path='/all-opinions'>
             <AllOpinions setToken={setToken} />
