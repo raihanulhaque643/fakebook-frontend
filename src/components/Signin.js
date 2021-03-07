@@ -17,7 +17,8 @@ const Signin = ({ setToken, toggleForm }) => {
         })
         setSignInError(false);
         setSignInErrorMessage('')
-        console.log(response)
+        console.log(response.data.user)
+        localStorage.setItem('user', response.data.user)
         setToken(response.data.token)
       } catch (e) {
         console.log(e.response.data)

@@ -19,7 +19,8 @@ const Signup = ({ setToken, toggleForm }) => {
           dateOfBirth: values.dateOfBirth,
           phone: values.phone
         })
-        console.log(response.data)
+        console.log(response.data.user)
+        localStorage.setItem('user', response.data.user)
         setToken(response.data.token)
       } catch (e) {
         setSignUpErrorMessage('')

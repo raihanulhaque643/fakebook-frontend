@@ -12,6 +12,7 @@ const Logout = ({ setToken }) => {
                 }
               })
             localStorage.removeItem('token')
+            localStorage.removeItem('user')
             setToken(null)
         } catch (e) {
             console.log(e)
