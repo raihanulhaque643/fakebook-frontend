@@ -27,7 +27,7 @@ function App() {
         <Navbar setToken={setToken} />
 
         <Switch>
-          <div className="container max-w-6xl px-4 mx-auto flex flex-col items-start">
+          <div className="container max-w-4xl px-4 mx-auto flex flex-col items-start">
             <Route path='/all-opinions'>
               <AllOpinions setToken={setToken} />
             </Route>

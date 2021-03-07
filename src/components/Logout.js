@@ -31,7 +31,8 @@ const Logout = ({ setToken }) => {
             border-red-700 
             hover:border-red-500 
             rounded">
-            Logout
+            Logout 
+            <i className="fa fa-power-off mx-0.5" aria-hidden="true"></i>
             </button>
         </div>
     )
