@@ -87,36 +87,36 @@ const Signup = ({ setToken, toggleForm }) => {
              <div></div>
            }
              <div className="mb-6">
-            <Field type="text" name="firstName" placeholder="First Name" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none"/>
+            <Field type="text" name="firstName" placeholder="First Name" className="w-full p-2 text-blue-700 border-b-2 border-blue-300 outline-none"/>
             <ErrorMessage name="firstName" component="small" className="text-red-700"/>
            </div>
            <div className="mb-6">
-            <Field type="text" name="lastName" placeholder="Last Name" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none"/>
+            <Field type="text" name="lastName" placeholder="Last Name" className="w-full p-2 text-blue-700 border-b-2 border-blue-300 outline-none"/>
             <ErrorMessage name="lastName" component="small" className="text-red-700"/>
            </div>
            <div className="mb-6">
             <label className="text-gray-500 px-2">Date Of Birth</label>
-            <Field type="date" name="dateOfBirth" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none"/>
+            <Field type="date" name="dateOfBirth" className="w-full p-2 text-blue-700 border-b-2 border-blue-300 outline-none"/>
             <ErrorMessage name="dateOfBirth" component="small" className="text-red-700"/>
            </div>
            <div className="mb-6">
-            <Field type="text" name="phone" placeholder="Phone" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none"/>
+            <Field type="text" name="phone" placeholder="Phone" className="w-full p-2 text-blue-700 border-b-2 border-blue-300 outline-none"/>
             <ErrorMessage name="phone" component="small" className="text-red-700"/>
            </div>
            <div className="mb-6">
-            <Field type="email" name="email" placeholder="Email" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none"/>
+            <Field type="email" name="email" placeholder="Email" className="w-full p-2 text-blue-700 border-b-2 border-blue-300 outline-none"/>
             <ErrorMessage name="email" component="small" className="text-red-700"/>
            </div>
            <div className="mb-6">
-            <Field type="password" name="password" placeholder="Password" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none" />
+            <Field type="password" name="password" placeholder="Password" className="w-full p-2 text-blue-700 border-b-2 border-blue-300 outline-none" />
             <ErrorMessage name="password" component="small" className="text-red-700"/>
            </div>
            <div className="mb-6">
-            <Field type="password" name="confirmPassword" placeholder="Confirm Password" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none" />
+            <Field type="password" name="confirmPassword" placeholder="Confirm Password" className="w-full p-2 text-blue-700 border-b-2 border-blue-300 outline-none" />
             <ErrorMessage name="confirmPassword" component="small" className="text-red-700"/>
            </div>
            <button type="submit" disabled={isSubmitting} 
-           className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 mb-6 rounded"
+           className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 mb-6 rounded"
            >
              Sign Up
            </button>

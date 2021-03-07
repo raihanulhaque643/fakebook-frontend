@@ -59,15 +59,15 @@ const Signin = ({ setToken, toggleForm }) => {
              <div></div>
            }
            <div className="mb-6">
-            <Field type="email" name="email" placeholder="Email" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none"/>
+            <Field type="email" name="email" placeholder="Email" className="w-full p-2 text-blue-700 border-b-2 border-blue-300 outline-none"/>
             <ErrorMessage name="email" component="small" className="text-red-700"/>
            </div>
            <div className="mb-6">
-            <Field type="password" name="password" placeholder="Password" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none" />
+            <Field type="password" name="password" placeholder="Password" className="w-full p-2 text-blue-700 border-b-2 border-blue-300 outline-none" />
             <ErrorMessage name="password" component="small" className="text-red-700"/>
            </div>
            <button type="submit" disabled={isSubmitting}
-           className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 mb-6 rounded"
+           className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 mb-6 rounded"
            >
              Sign In
            </button>
