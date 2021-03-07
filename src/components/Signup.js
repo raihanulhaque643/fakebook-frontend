@@ -4,7 +4,11 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import axios from 'axios'
 
 const Signup = ({ setToken, toggleForm }) => {
-    const handleSubmit = async (values) => {
+    const [signUpError, setSignUpError] = useState(false);
+    const [signUpErrorMessage, setSignUpErrorMessage] = useState('');
+
+    const handleSubmit = async (values, setSubmitting) => {
+      setSubmitting(true)
       try {
         const response = await axios.post(' https://fakebook-backend-643.herokuapp.com/signup', 
           {
@@ -15,10 +19,20 @@ const Signup = ({ setToken, toggleForm }) => {
           dateOfBirth: values.dateOfBirth,
           phone: values.phone
         })
-        console.log(response)
+        console.log(response.data)
         setToken(response.data.token)
       } catch (e) {
-        console.log(e)
+        setSignUpErrorMessage('')
+        console.log(e.response.data.errors)
+        if (e.response.data.errors.email) {
+          setSignUpErrorMessage(e.response.data.errors.email.message)
+        } else if (e.response.data.errors.password) {
+          setSignUpErrorMessage(e.response.data.errors.password.message)
+        } else {
+          setSignUpErrorMessage('Unknown error occured!')
+        }
+        setSignUpError(true);
+        setSubmitting(false)
       }
     }
 
@@ -59,11 +73,18 @@ const Signup = ({ setToken, toggleForm }) => {
          return errors;
        }}
        onSubmit={(values, { setSubmitting }) => {
-         handleSubmit(values)
+        setSignUpError(false);
+        setSignUpErrorMessage('')
+         handleSubmit(values, setSubmitting)
        }}
      >
        {({ isSubmitting }) => (
          <Form className="">
+           {
+             signUpError ?
+             <div className="text-red-700 mb-4 font-semibold">{signUpErrorMessage}</div> :
+             <div></div>
+           }
              <div className="mb-6">
             <Field type="text" name="firstName" placeholder="First Name" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none"/>
             <ErrorMessage name="firstName" component="small" className="text-red-700"/>
@@ -93,7 +114,7 @@ const Signup = ({ setToken, toggleForm }) => {
             <Field type="password" name="confirmPassword" placeholder="Confirm Password" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none" />
             <ErrorMessage name="confirmPassword" component="small" className="text-red-700"/>
            </div>
-           <button type="submit" disabled={isSubmitting}
+           <button type="submit" disabled={isSubmitting} 
            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 mb-6 rounded"
            >
              Sign Up

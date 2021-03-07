@@ -4,18 +4,27 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import axios from 'axios'
 
 const Signin = ({ setToken, toggleForm }) => {
-    const handleSubmit = async (values) => {
+    const [signInError, setSignInError] = useState(false);
+    const [signInErrorMessage, setSignInErrorMessage] = useState('');
+
+    const handleSubmit = async (values, setSubmitting) => {
+      setSubmitting(true)
       try {
         const response = await axios.post(' https://fakebook-backend-643.herokuapp.com/signin', 
         {
         email: values.email,
         password: values.password
         })
+        setSignInError(false);
+        setSignInErrorMessage('')
         console.log(response)
         setToken(response.data.token)
       } catch (e) {
-        console.log(e)
+        console.log(e.response.data)
+        setSignInErrorMessage(e.response.data.error)
+        setSignInError(true);
       }
+      setSubmitting(false)
     }
 
     return (
@@ -38,11 +47,16 @@ const Signin = ({ setToken, toggleForm }) => {
          return errors;
        }}
        onSubmit={(values, { setSubmitting }) => {
-         handleSubmit(values)
+         handleSubmit(values, setSubmitting)
        }}
      >
        {({ isSubmitting }) => (
          <Form className="">
+           {
+             signInError ?
+             <div className="text-red-700 mb-4 font-semibold">{signInErrorMessage}</div> :
+             <div></div>
+           }
            <div className="mb-6">
             <Field type="email" name="email" placeholder="Email" className="w-full p-2 text-blue-700 border-b-2 border-blue-500 outline-none"/>
             <ErrorMessage name="email" component="small" className="text-red-700"/>
