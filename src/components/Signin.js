@@ -1,10 +1,22 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
+import axios from 'axios'
 
 const Signin = ({ setToken, toggleForm }) => {
-    // const [email, setEmail] = useState()
-    // const [password, setPassword] = useState()
+    const handleSubmit = async (values) => {
+      try {
+        const response = await axios.post(' https://fakebook-backend-643.herokuapp.com/signin', 
+        {
+        email: values.email,
+        password: values.password
+        })
+        console.log(response)
+        setToken(response.data.token)
+      } catch (e) {
+        console.log(e)
+      }
+    }
 
     return (
         <div className="flex h-screen bg-blue-200">
@@ -26,10 +38,7 @@ const Signin = ({ setToken, toggleForm }) => {
          return errors;
        }}
        onSubmit={(values, { setSubmitting }) => {
-         setTimeout(() => {
-           alert(JSON.stringify(values, null, 2));
-           setSubmitting(false);
-         }, 400);
+         handleSubmit(values)
        }}
      >
        {({ isSubmitting }) => (

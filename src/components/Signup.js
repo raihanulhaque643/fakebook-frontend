@@ -1,22 +1,32 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
+import axios from 'axios'
 
 const Signup = ({ setToken, toggleForm }) => {
-    // const [email, setEmail] = useState()
-    // const [password, setPassword] = useState()
-    // const [confimPassword, setConfirmPassword] = useState()
-
-    // const [firstName, setFirstName] = useState()
-    // const [lastName, setLastName] = useState()
-    // const [dateOfBirth, setDateOfBirth] = useState()
-    // const [phone, setPhone] = useState()
+    const handleSubmit = async (values) => {
+      try {
+        const response = await axios.post(' https://fakebook-backend-643.herokuapp.com/signup', 
+          {
+          email: values.email,
+          password: values.password,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          dateOfBirth: values.dateOfBirth,
+          phone: values.phone
+        })
+        console.log(response)
+        setToken(response.data.token)
+      } catch (e) {
+        console.log(e)
+      }
+    }
 
     return (
         <div className="flex h-screen bg-blue-200">
           <div className="w-full max-w-xs m-auto bg-blue-100 rounded p-5">
             <Formik
-       initialValues={{ email: '', password: '', confirmPassword: '', firstName: '', lastName: '', phone: '', dateOfBirth: null }}
+       initialValues={{ email: '', password: '', confirmPassword: '', firstName: '', lastName: '', phone: '', dateOfBirth: '' }}
        validate={values => {
          const errors = {};
          if (!values.email) {
@@ -49,10 +59,7 @@ const Signup = ({ setToken, toggleForm }) => {
          return errors;
        }}
        onSubmit={(values, { setSubmitting }) => {
-         setTimeout(() => {
-           alert(JSON.stringify(values, null, 2));
-           setSubmitting(false);
-         }, 400);
+         handleSubmit(values)
        }}
      >
        {({ isSubmitting }) => (
