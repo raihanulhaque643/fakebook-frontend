@@ -10,9 +10,8 @@ export default function Navbar({ setToken, fixed }) {
         <div className="container max-w-6xl px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
             <Link
-                to="/"
+                to="/all-opinions"
               className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase text-white"
-              href="#pablo"
             >
                 opinionbook
             </Link>
@@ -34,9 +33,8 @@ export default function Navbar({ setToken, fixed }) {
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               <li className="nav-item">
                 <Link
-                to="/"
+                to="/all-opinions"
                   className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                  href="#pablo"
                 >
                   <i className="fa fa-users text-lg leading-lg text-white opacity-75"></i><span className="ml-2">Public</span>
                 </Link>
@@ -45,7 +43,6 @@ export default function Navbar({ setToken, fixed }) {
                 <Link
                 to="/my-opinions"
                   className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                  href="#pablo"
                 >
                   <i className="fa fa-user text-lg leading-lg text-white opacity-75"></i><span className="ml-2">Personal</span>
                 </Link>

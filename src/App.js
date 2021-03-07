@@ -27,15 +27,17 @@ function App() {
         <Navbar setToken={setToken} />
 
         <Switch>
-          <Route path='/all-opinions'>
-            <AllOpinions setToken={setToken} />
-          </Route>
-          <Route path='/my-opinions'>
-            <MyOpinions setToken={setToken} />
-          </Route>
-          <Route path=''>
-            <Redirect to="/all-opinions" />
-          </Route>
+          <div className="container max-w-6xl px-4 mx-auto flex flex-col items-start">
+            <Route path='/all-opinions'>
+              <AllOpinions setToken={setToken} />
+            </Route>
+            <Route path='/my-opinions'>
+              <MyOpinions setToken={setToken} />
+            </Route>
+            <Route path='/'>
+              <Redirect to="/all-opinions" />
+            </Route>
+          </div>
         </Switch>
       </Router>
     </div>
