@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import FormData from 'form-data'
 
 const AddOpinion = () => {
     const [description, setDescription] = useState('')
@@ -27,6 +28,25 @@ const AddOpinion = () => {
         console.log(file)
 
         // axios
+        let formData = new FormData();
+
+        formData.append('opinionImage', file)
+        formData.append('description', description)
+
+        const myToken = localStorage.getItem('token')
+
+        axios({
+            url: ' https://fakebook-backend-643.herokuapp.com/opinions/me',
+            method: 'POST',
+            headers: {
+                authorization: myToken
+            },
+            data: formData
+        }).then((response) => {
+            console.log(response)
+        }).catch((e) => {
+            console.log({e})
+        })
 
     }
 
