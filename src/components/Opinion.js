@@ -2,7 +2,7 @@ import React from 'react'
 
 const Opinion = ({ author, image, description, agreements, disagreements, date, time }) => {
     return (
-        <div>
+        <div className="max-w-lg mx-auto">
             <div className="flex-row">
                 <img src={image} alt="" width="auto" height="500"/>
             </div>
