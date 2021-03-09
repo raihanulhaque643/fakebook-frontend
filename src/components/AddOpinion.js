@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import FormData from 'form-data'
+import ProgressBar from './ProgressBar'
 
 const AddOpinion = () => {
     const [description, setDescription] = useState('')
     const [file, setFile] = useState(null)
     const [error, setError] = useState('')
+    const [success, setSuccess] = useState('')
+    const [progress, setProgress] = useState()
+    const [uploading, setUploading] = useState(false)
 
     const handleFile = (e) => {
         setFile(e.target.files[0])
@@ -17,6 +21,9 @@ const AddOpinion = () => {
 
     const handleSubmit = () => {
         setError('')
+        setSuccess('')
+        setProgress(0)
+        setUploading(false)
         if(!description) {
             return setError('Description is required!')
         }
@@ -27,7 +34,7 @@ const AddOpinion = () => {
         console.log(description)
         console.log(file)
 
-        // axios
+        //  create readable "multipart/form-data" streams using FormData
         let formData = new FormData();
 
         formData.append('opinionImage', file)
@@ -41,11 +48,21 @@ const AddOpinion = () => {
             headers: {
                 authorization: myToken
             },
-            data: formData
+            data: formData,
+            onUploadProgress: data => {
+                //Set the progress value to show the progress bar
+                setUploading(true)
+                setProgress(Math.round((100 * data.loaded) / data.total))
+                console.log(progress)
+            },
         }).then((response) => {
+            setUploading(false)
+            setSuccess('Opinion posted successfully!')
             console.log(response)
         }).catch((e) => {
-            console.log({e})
+            setSuccess('')
+            setUploading(false)
+            setError(e.response.data.error)
         })
 
     }
@@ -64,10 +81,20 @@ const AddOpinion = () => {
         px-4 
         py-2
         ">
+            {
+                uploading ? 
+                <ProgressBar progress={progress} label={`${progress}%`} /> :
+                <div></div>
+            }
             <div className="font-semibold my-2 text-4xl">Add an opinion:</div>
             {
                 error ?
                 <div className="font-semibold text-red-600">{error}</div> : 
+                <div></div>
+            }
+            {
+                success ?
+                <div className="font-semibold text-green-600">{success}</div> : 
                 <div></div>
             }
             <div className="my-4 flex flex-col text-lg">
