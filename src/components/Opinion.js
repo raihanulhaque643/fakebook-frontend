@@ -2,9 +2,9 @@ import React from 'react'
 
 const Opinion = ({ author, image, description, agreements, disagreements, date, time }) => {
     return (
-        <div className="max-w-lg mx-auto">
+        <div className="max-w-lg min-w-lg mx-auto my-4 bg-blue-100">
             <div className="flex-row">
-                <img src={image} alt="" width="auto" height="500"/>
+                <img src={image} alt="" width="100%" height="auto"/>
             </div>
             <div className="border border-gray-200">
                 <div className="flex flex-row px-2 justify-between">
