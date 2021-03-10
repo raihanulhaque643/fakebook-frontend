@@ -6,7 +6,10 @@ import Opinion from '../components/Opinion'
 
 const MyOpinions = () => {
     return (
-        <FetchOpinions route={'myOpinions'} />
+        <div className="container max-w-lg px-0 mx-auto flex flex-col" >
+            <AddOpinion />
+            <FetchOpinions route={'myOpinions'} />
+        </div>
     )
 }
 
