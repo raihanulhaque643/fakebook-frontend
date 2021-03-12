@@ -12,7 +12,7 @@ const FetchOpinions = ({ route }) => {
     function getMoreOpinions () {
       setDisableLoadButton(true)
       setLoadButtonText('Loading...please wait...')
-      const currentIncrement = increment + 3;
+      const currentIncrement = increment + 10;
       setIncrement(currentIncrement)
       getOpinions(currentIncrement)
     }
@@ -20,7 +20,7 @@ const FetchOpinions = ({ route }) => {
       async function getOpinions (skip) {
       const token = localStorage.getItem('token')
       let allOpinions = await 
-      axios.get(`https://fakebook-backend-643.herokuapp.com/${route}?limit=3&skip=${skip}`, {
+      axios.get(`https://fakebook-backend-643.herokuapp.com/${route}?limit=10&skip=${skip}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -61,7 +61,7 @@ const FetchOpinions = ({ route }) => {
               opinions.map((opinion) => {
                 return <Opinion
                 key={opinion._id} 
-                image={`https://fakebook-backend-643.herokuapp.com/opinions/${opinion._id}/opinionImage`}
+                image={opinion.url}
                 author={opinion.owner}
                 date={opinion.updatedAt}
                 // time={}
@@ -74,8 +74,9 @@ const FetchOpinions = ({ route }) => {
               <div className="text-2xl text-gray-400 font-semibold">Loading...</div>
             }
             {
-              responseComplete &&
-              <button onClick={getMoreOpinions} disabled={disableLoadButton} className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 mb-6 rounded">{loadButtonText}</button>
+              (opinions.length) ?
+              <button onClick={getMoreOpinions} disabled={disableLoadButton} className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 mb-6 rounded">{loadButtonText}</button> :
+              <div></div>
             }
         </div>
     )

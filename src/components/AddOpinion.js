@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import FormData from 'form-data'
 import ProgressBar from './ProgressBar'
+import {storageRef, db} from '../firebase/firebase-config';
+import firebase from "firebase/app";
+import { v4 as uuidv4 } from 'uuid';
 
 const AddOpinion = () => {
     const [description, setDescription] = useState('')
@@ -11,19 +14,12 @@ const AddOpinion = () => {
     const [progress, setProgress] = useState()
     const [uploading, setUploading] = useState(false)
 
-    const handleFile = (e) => {
+    const handleFileChange = e => {
+        e.preventDefault();
         setFile(e.target.files[0])
     }
 
-    const handleText = (e) => {
-        setDescription(e.target.value)
-    }
-
-    const handleSubmit = () => {
-        setError('')
-        setSuccess('')
-        setProgress(0)
-        setUploading(false)
+    const handleFile = (e) => {
         if(!description) {
             return setError('Description is required!')
         }
@@ -33,36 +29,98 @@ const AddOpinion = () => {
 
         console.log(description)
         console.log(file)
+        
+        const image = file;
+        const uniqueFilename = uuidv4();
+        var uploadTask  = storageRef.child(uniqueFilename).put(image);
 
-        //  create readable "multipart/form-data" streams using FormData
-        let formData = new FormData();
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        function(snapshot) {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            setUploading(true)
+            setProgress(progress)
+            switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log('Upload is paused');
+                break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log('Upload is running');
+                break;
+            default: 
+                // default action here
+                break;
+            }
+        }, function(error) {
+        switch (error.code) {
+            case 'storage/unauthorized':
+            console.log('User does not have permission to access the object');
+            break;
 
-        formData.append('opinionImage', file)
-        formData.append('description', description)
+            case 'storage/canceled':
+            console.log('User canceled the upload');
+            break;
+
+            case 'storage/unknown':
+            console.log('Unknown error occurred, inspect error.serverResponse');
+            break;
+            
+            default: 
+            // default action here
+            break;
+        }
+        }, function() {
+            console.log({
+                "check this": uploadTask.snapshot.ref
+            })
+        // Upload completed successfully, now we can get the download URL
+        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            console.log('Upload successful!')
+            console.log(downloadURL, uniqueFilename)
+            setUploading(false)
+            handleSubmit(downloadURL, uniqueFilename)
+        });
+    });
+  
+  };
+
+    const handleText = (e) => {
+        setDescription(e.target.value)
+    }
+
+    const handleSubmit = (url, imageId) => {
+        setError('')
+        setSuccess('')
+        setProgress(0)
+        setUploading(false)
+
+        let formData = {};
+
+        // formData.append('url', url)
+        // formData.append('imageId', imageId)
+        // formData.append('description', description)
+
+        formData['url'] = url
+        formData['imageId'] = imageId
+        formData['description'] = description
 
         const myToken = localStorage.getItem('token')
 
         axios({
-            url: ' https://fakebook-backend-643.herokuapp.com/opinions/me',
+            url: ' https://fakebook-backend-643.herokuapp.com/opinions',
             method: 'POST',
             headers: {
                 authorization: myToken
             },
-            data: formData,
-            onUploadProgress: data => {
-                //Set the progress value to show the progress bar
-                setUploading(true)
-                setProgress(Math.round((100 * data.loaded) / data.total))
-                console.log(progress)
-            },
+            data: formData
         }).then((response) => {
-            setUploading(false)
             setSuccess('Opinion posted successfully!')
             console.log(response)
         }).catch((e) => {
             setSuccess('')
-            setUploading(false)
-            setError(e.response.data.error)
+            setError('Could not write to database.')
         })
 
     }
@@ -80,7 +138,7 @@ const AddOpinion = () => {
         rounded 
         px-4 
         py-2
-        ">
+        "> 
             {
                 uploading ? 
                 <ProgressBar progress={progress} label={`${progress}%`} /> :
@@ -103,10 +161,10 @@ const AddOpinion = () => {
             </div>
             <div className="my-4 flex flex-col text-lg">
                 <label htmlFor="" className="font-semibold">Add an image (jpg/png)</label>
-                <input onChange={handleFile} type="file"/>
+                <input onChange={handleFileChange} type="file"/>
             </div>
             <div className="my-4 flex flex-col text-lg">
-                <button onClick={handleSubmit} className="w-full bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 mb-0 rounded">Submit</button>
+                <button onClick={handleFile} className="w-full bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 mb-0 rounded">Submit</button>
             </div>
         </div>
     )
