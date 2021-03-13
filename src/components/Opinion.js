@@ -1,6 +1,15 @@
 import React from 'react'
 
-const Opinion = ({ author, image, description, agreements, disagreements, date, time }) => {
+const Opinion = ({ author, firstName, lastName, image, description, agreements, disagreements, date }) => {
+    const dateHolder = new Date(date)
+    const dd = dateHolder.getDate();
+    const mm = dateHolder.getMonth();
+    const yyyy = dateHolder.getFullYear();
+    const hours = dateHolder.getHours();
+    const minutes = dateHolder.getMinutes();
+    const seconds = dateHolder.getSeconds();
+
+
     return (
         <div className="max-w-lg min-w-lg mx-auto my-4 bg-blue-100">
             <div className="flex-row">
@@ -9,10 +18,10 @@ const Opinion = ({ author, image, description, agreements, disagreements, date, 
             <div className="border border-gray-200">
                 <div className="flex flex-row px-2 justify-between">
                     <div className="flex flex-col">
-                        <span className="font-semibold">{author}</span>
+                        <span className="font-semibold">{firstName}{' '}{lastName}</span>
                     </div>
                     <div className="flex flex-col">
-                        <small className="">{date}, {time}</small>
+                        <small className="">{`${dd}-${mm}-${yyyy}, ${hours}:${minutes}:${seconds}`}</small>
                     </div>
                 </div>
                 <div className="flex-row px-2">

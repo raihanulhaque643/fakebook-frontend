@@ -63,6 +63,8 @@ const FetchOpinions = ({ route }) => {
                 key={opinion._id} 
                 image={opinion.url}
                 author={opinion.owner}
+                firstName={opinion.firstName}
+                lastName={opinion.lastName}
                 date={opinion.updatedAt}
                 // time={}
                 description={opinion.description}
