@@ -37,6 +37,7 @@ const AddOpinion = () => {
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
         function(snapshot) {
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
             // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log('Upload is ' + progress + '% done');
@@ -57,14 +58,17 @@ const AddOpinion = () => {
         switch (error.code) {
             case 'storage/unauthorized':
             console.log('User does not have permission to access the object');
+            setUploading(false)
             break;
 
             case 'storage/canceled':
             console.log('User canceled the upload');
+            setUploading(false)
             break;
 
             case 'storage/unknown':
             console.log('Unknown error occurred, inspect error.serverResponse');
+            setUploading(false)
             break;
             
             default: 

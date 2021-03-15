@@ -6,13 +6,14 @@ const Logout = ({ setToken }) => {
         try {
             await axios({
                 method: 'post', 
-                url: 'https://fakebook-backend-643.herokuapp.com/logout',
+                url: 'https://fakebook-backend-643.herokuapp.com/logoutAll',
                 headers: {
                   Authorization: 'Bearer ' + localStorage.getItem('token')
                 }
               })
             localStorage.removeItem('token')
             localStorage.removeItem('user')
+            localStorage.removeItem('firebaseUser')
             setToken(null)
         } catch (e) {
             console.log(e)

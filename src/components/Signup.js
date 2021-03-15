@@ -116,9 +116,13 @@ const Signup = ({ setToken, toggleForm }) => {
             <ErrorMessage name="confirmPassword" component="small" className="text-red-700"/>
            </div>
            <button type="submit" disabled={isSubmitting} 
-           className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 mb-6 rounded"
+           className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 mb-6 rounded flex flex-row justify-center items-center"
            >
-             Sign Up
+             <span>Sign Up</span>
+             {
+              isSubmitting &&
+              <svg class="rounded-full animate-ping duration-300 w-3 h-3 border-2 mx-2"></svg>
+            }
            </button>
            <button onClick={toggleForm} className="text-blue-700 hover:text-blue-900 text-sm float-right" >Sign in</button>
          </Form>

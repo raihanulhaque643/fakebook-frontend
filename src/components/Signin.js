@@ -8,6 +8,7 @@ const Signin = ({ setToken, toggleForm }) => {
     const [signInErrorMessage, setSignInErrorMessage] = useState('');
 
     const handleSubmit = async (values, setSubmitting) => {
+      setSignInErrorMessage('')
       setSubmitting(true)
       try {
         const response = await axios.post(' https://fakebook-backend-643.herokuapp.com/signin', 
@@ -17,11 +18,12 @@ const Signin = ({ setToken, toggleForm }) => {
         })
         setSignInError(false);
         setSignInErrorMessage('')
-        console.log(response.data.user)
+        console.log(response.data)
         localStorage.setItem('user', response.data.user)
+        localStorage.setItem('firebaseUser', response.data.firebaseUser)
         setToken(response.data.token)
       } catch (e) {
-        console.log(e.response.data)
+        console.log({e})
         setSignInErrorMessage(e.response.data.error)
         setSignInError(true);
       }
@@ -67,9 +69,13 @@ const Signin = ({ setToken, toggleForm }) => {
             <ErrorMessage name="password" component="small" className="text-red-700"/>
            </div>
            <button type="submit" disabled={isSubmitting}
-           className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 mb-6 rounded"
+           className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 mb-6 rounded flex flex-row justify-center items-center"
            >
-             Sign In
+             <span>Sign In</span>
+            {
+              isSubmitting &&
+              <svg class="rounded-full animate-ping duration-300 w-3 h-3 border-2 mx-2"></svg>
+            }
            </button>
            <button onClick={toggleForm} className="text-blue-700 hover:text-blue-900 text-sm float-right" >Create Account</button>
          </Form>
