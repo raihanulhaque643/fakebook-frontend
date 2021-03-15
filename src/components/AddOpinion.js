@@ -13,6 +13,7 @@ const AddOpinion = () => {
     const [success, setSuccess] = useState('')
     const [progress, setProgress] = useState()
     const [uploading, setUploading] = useState(false)
+    const [submitting, setSubmitting] = useState(false)
 
     const handleFileChange = e => {
         e.preventDefault();
@@ -20,6 +21,8 @@ const AddOpinion = () => {
     }
 
     const handleFile = (e) => {
+        setError('')
+        setSuccess('')
         if(!description) {
             return setError('Description is required!')
         }
@@ -37,7 +40,6 @@ const AddOpinion = () => {
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
         function(snapshot) {
-            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
             // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log('Upload is ' + progress + '% done');
@@ -95,6 +97,7 @@ const AddOpinion = () => {
     }
 
     const handleSubmit = (url, imageId) => {
+        setSubmitting(true)
         setError('')
         setSuccess('')
         setProgress(0)
@@ -120,9 +123,11 @@ const AddOpinion = () => {
             },
             data: formData
         }).then((response) => {
+            setSubmitting(false)
             setSuccess('Opinion posted successfully!')
             console.log(response)
         }).catch((e) => {
+            setSubmitting(false)
             setSuccess('')
             setError('Could not write to database.')
         })
@@ -168,7 +173,13 @@ const AddOpinion = () => {
                 <input onChange={handleFileChange} type="file"/>
             </div>
             <div className="my-4 flex flex-col text-lg">
-                <button onClick={handleFile} className="w-full bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 mb-0 rounded">Submit</button>
+                <button onClick={handleFile} className="w-full bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 mb-0 rounded flex flex-row justify-center items-center">
+                    <span>Submit</span>
+                    {
+                    submitting &&
+                    <svg class="rounded-full animate-ping duration-300 w-3 h-3 border-2 mx-2"></svg>
+                    }
+                </button>
             </div>
         </div>
     )
