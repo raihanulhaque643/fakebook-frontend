@@ -51,7 +51,8 @@ const FetchOpinions = ({ route }) => {
               responseComplete ?
               opinions.map((opinion) => {
                 return <Opinion
-                key={opinion._id} 
+                key={opinion._id}
+                opinionId={opinion._id} 
                 image={opinion.url}
                 author={opinion.owner}
                 firstName={opinion.firstName}

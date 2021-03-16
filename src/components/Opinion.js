@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios';
 
-const Opinion = ({ author, firstName, lastName, image, description, agreements, disagreements, date, owner }) => {
+const Opinion = ({ opinionId, author, firstName, lastName, image, description, agreements, disagreements, date, owner }) => {
 
     const [signedInUser, setSignedInUser] = useState(JSON.parse(localStorage.getItem('user')))
+    const [over, setOver] = useState(false);
 
     const dateHolder = new Date(date)
     const dd = dateHolder.getDate();
@@ -14,6 +16,23 @@ const Opinion = ({ author, firstName, lastName, image, description, agreements, 
     const minutes = dateHolder.getMinutes();
     const seconds = dateHolder.getSeconds();
 
+    const handleTrashButton = async () => {
+            console.log(opinionId)
+            const token = localStorage.getItem('token')
+            await 
+            axios.delete(`https://fakebook-backend-643.herokuapp.com/opinions/${opinionId}`, {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              })
+              .then((res) => {
+                console.log(res.data)
+              })
+              .catch((error) => {
+                console.log({error})
+              })
+    }
+
     return (
         <div className="max-w-lg min-w-lg mx-auto my-4 bg-blue-100">
             <div className="flex-row relative">
@@ -21,9 +40,15 @@ const Opinion = ({ author, firstName, lastName, image, description, agreements, 
                 {
                     signedInUser._id === owner &&
                     <div className="absolute right-3 top-3 z-10">
-                    <span style={{'fontSize': '22px', 'color': 'grey'}}>
-                    <FontAwesomeIcon icon={faTrashAlt} />
-                    </span>
+                        <button
+                            onMouseOver={() => setOver(true)}
+                            onMouseLeave={() => setOver(false)}
+                            onClick={handleTrashButton}
+                        >
+                            <span style={{'fontSize': '22px'}}>
+                            <FontAwesomeIcon icon={faTrashAlt} style={over ? { color: "darkRed" } : {color: "gray"}} />
+                            </span>
+                        </button>
                     </div>
                 }
             </div>
