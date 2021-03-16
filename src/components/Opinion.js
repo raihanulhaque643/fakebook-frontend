@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import firebase from 'firebase';
+import React, { useState } from 'react';
 
 const Opinion = ({ opinionId, author, firstName, lastName, image, description, agreements, disagreements, date, owner }) => {
 
@@ -17,20 +18,21 @@ const Opinion = ({ opinionId, author, firstName, lastName, image, description, a
     const seconds = dateHolder.getSeconds();
 
     const handleTrashButton = async () => {
-            console.log(opinionId)
+            var storageRef = firebase.storage().ref();
             const token = localStorage.getItem('token')
-            await 
-            axios.delete(`https://fakebook-backend-643.herokuapp.com/opinions/${opinionId}`, {
-                headers: {
-                  'Authorization': `Bearer ${token}`
-                }
-              })
-              .then((res) => {
-                console.log(res.data)
-              })
-              .catch((error) => {
-                console.log({error})
-              })
+            try {
+                const response = 
+                await 
+                axios.delete(`https://fakebook-backend-643.herokuapp.com/opinions/${opinionId}`, {
+                    headers: {
+                      'Authorization': `Bearer ${token}`
+                    }
+                  })
+                await storageRef.child(`${response.data.imageId}`).delete()
+                console.log('Mongo object and Firebase image both deleted successfully!')
+            } catch (e) {
+                console.log({e})
+            }
     }
 
     return (
