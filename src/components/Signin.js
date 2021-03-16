@@ -18,9 +18,9 @@ const Signin = ({ setToken, toggleForm }) => {
         })
         setSignInError(false);
         setSignInErrorMessage('')
-        console.log(response.data)
-        localStorage.setItem('user', response.data.user)
-        localStorage.setItem('firebaseUser', response.data.firebaseUser)
+        console.log(response.data.user)
+        localStorage.setItem('user', JSON.stringify(response.data.user))
+        localStorage.setItem('firebaseUser', JSON.stringify(response.data.firebaseUser))
         setToken(response.data.token)
       } catch (e) {
         console.log({e})
@@ -74,7 +74,7 @@ const Signin = ({ setToken, toggleForm }) => {
              <span>Sign In</span>
             {
               isSubmitting &&
-              <svg class="rounded-full animate-ping duration-300 w-3 h-3 border-2 mx-2"></svg>
+              <svg className="rounded-full animate-ping duration-300 w-3 h-3 border-2 mx-2"></svg>
             }
            </button>
            <button onClick={toggleForm} className="text-blue-700 hover:text-blue-900 text-sm float-right" >Create Account</button>

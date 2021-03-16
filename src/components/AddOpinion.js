@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import FormData from 'form-data'
 import ProgressBar from './ProgressBar'
 import {storageRef, db} from '../firebase/firebase-config';
 import firebase from "firebase/app";
@@ -104,10 +103,6 @@ const AddOpinion = () => {
         setUploading(false)
 
         let formData = {};
-
-        // formData.append('url', url)
-        // formData.append('imageId', imageId)
-        // formData.append('description', description)
 
         formData['url'] = url
         formData['imageId'] = imageId

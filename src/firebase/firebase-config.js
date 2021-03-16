@@ -18,4 +18,3 @@ const firebaseConfig = {
   // Create a storage reference from our storage service
   export var storageRef = storage.ref();
   
-//   export var db = firebase.firestore();
