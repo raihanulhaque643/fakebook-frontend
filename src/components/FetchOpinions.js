@@ -89,13 +89,14 @@ const FetchOpinions = ({ route, reFetchOpinions, setReFetchOpinions }) => {
                 description={opinion.description}
                 agreements={opinion.agree.length}
                 disagreements={opinion.disagree.length}
+                setReFetchOpinions={setReFetchOpinions}
                 />
               })
               :
               <div className="text-2xl text-gray-400 font-semibold">Loading...</div>
             }
             {
-              (opinions &&  responseComplete) ?
+              (opinions.length &&  responseComplete) ?
               <button onClick={getMoreOpinions} disabled={disableLoadButton} className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 mb-6 rounded">{loadButtonText}</button> :
               <div></div>
             }

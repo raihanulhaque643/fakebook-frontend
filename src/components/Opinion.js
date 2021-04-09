@@ -1,13 +1,9 @@
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
-import firebase from 'firebase';
 import React, { useState } from 'react';
+import { DeleteModal } from './DeleteModal'
 
-const Opinion = ({ opinionId, author, firstName, lastName, image, description, agreements, disagreements, date, owner }) => {
+const Opinion = ({ opinionId, author, firstName, lastName, image, description, agreements, disagreements, date, owner, setReFetchOpinions }) => {
 
     const [signedInUser, setSignedInUser] = useState(JSON.parse(localStorage.getItem('user')))
-    const [over, setOver] = useState(false);
 
     const dateHolder = new Date(date)
     const dd = dateHolder.getDate();
@@ -17,24 +13,6 @@ const Opinion = ({ opinionId, author, firstName, lastName, image, description, a
     const minutes = dateHolder.getMinutes();
     const seconds = dateHolder.getSeconds();
 
-    const handleTrashButton = async () => {
-            var storageRef = firebase.storage().ref();
-            const token = localStorage.getItem('token')
-            try {
-                const response = 
-                await 
-                axios.delete(`https://fakebook-backend-643.herokuapp.com/opinions/${opinionId}`, {
-                    headers: {
-                      'Authorization': `Bearer ${token}`
-                    }
-                  })
-                await storageRef.child(`${response.data.imageId}`).delete()
-                console.log('Mongo object and Firebase image both deleted successfully!')
-            } catch (e) {
-                console.log({e})
-            }
-    }
-
     return (
         <div className="max-w-lg min-w-lg mx-auto my-4 bg-blue-100">
             <div className="flex-row relative">
@@ -42,15 +20,7 @@ const Opinion = ({ opinionId, author, firstName, lastName, image, description, a
                 {
                     signedInUser._id === owner &&
                     <div className="absolute right-3 top-3 z-10">
-                        <button
-                            onMouseOver={() => setOver(true)}
-                            onMouseLeave={() => setOver(false)}
-                            onClick={handleTrashButton}
-                        >
-                            <span style={{'fontSize': '22px'}}>
-                            <FontAwesomeIcon icon={faTrashAlt} style={over ? { color: "darkRed" } : {color: "gray"}} />
-                            </span>
-                        </button>
+                        <DeleteModal opinionId={opinionId} image={image} description={description} setReFetchOpinions={setReFetchOpinions} />
                     </div>
                 }
             </div>

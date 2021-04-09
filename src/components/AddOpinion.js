@@ -173,7 +173,7 @@ const AddOpinion = ({ setReFetchOpinions }) => {
                     <span>Submit</span>
                     {
                     submitting &&
-                    <svg class="rounded-full animate-ping duration-300 w-3 h-3 border-2 mx-2"></svg>
+                    <svg className="rounded-full animate-ping duration-300 w-3 h-3 border-2 mx-2"></svg>
                     }
                 </button>
             </div>
