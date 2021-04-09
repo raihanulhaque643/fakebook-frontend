@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Opinion from './Opinion';
 
-const FetchOpinions = ({ route }) => {
+const FetchOpinions = ({ route, reFetchOpinions, setReFetchOpinions }) => {
     let [opinions, setOpinions] = useState([])
     let [responseComplete, setResponseComplete] = useState(false)
     let [increment, setIncrement] = useState(0);
@@ -39,16 +39,43 @@ const FetchOpinions = ({ route }) => {
         })
     }
 
+    async function reFetch () {
+      const token = localStorage.getItem('token')
+      let allOpinions = await 
+      axios.get(`https://fakebook-backend-643.herokuapp.com/${route}?limit=10&skip=0`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        .then((res) => {
+          setOpinions([])
+          setOpinions(res.data)
+          setResponseComplete(true)
+        })
+        .catch((error) => {
+          console.log({error})
+          setResponseComplete(false)
+        })
+    }
+
     useEffect(() => {
         setIncrement(0)
         setOpinions([])
         getOpinions(0)
     }, [])
 
+    useEffect(() => {
+      if(reFetchOpinions) {
+        setResponseComplete(false)
+        reFetch()
+        setReFetchOpinions(false)
+      }
+  }, [reFetchOpinions])
+
     return (
         <div className="container max-w-lg px-0 mx-auto flex flex-col">
             {
-              responseComplete ?
+              responseComplete && opinions ?
               opinions.map((opinion) => {
                 return <Opinion
                 key={opinion._id}
@@ -68,7 +95,7 @@ const FetchOpinions = ({ route }) => {
               <div className="text-2xl text-gray-400 font-semibold">Loading...</div>
             }
             {
-              (opinions.length) ?
+              (opinions &&  responseComplete) ?
               <button onClick={getMoreOpinions} disabled={disableLoadButton} className="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 mb-6 rounded">{loadButtonText}</button> :
               <div></div>
             }

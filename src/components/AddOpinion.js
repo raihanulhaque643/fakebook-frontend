@@ -5,7 +5,7 @@ import {storageRef, db} from '../firebase/firebase-config';
 import firebase from "firebase/app";
 import { v4 as uuidv4 } from 'uuid';
 
-const AddOpinion = () => {
+const AddOpinion = ({ setReFetchOpinions }) => {
     const [description, setDescription] = useState('')
     const [file, setFile] = useState(null)
     const [error, setError] = useState('')
@@ -120,6 +120,7 @@ const AddOpinion = () => {
         }).then((response) => {
             setSubmitting(false)
             setSuccess('Opinion posted successfully!')
+            setReFetchOpinions(true)
             console.log(response)
         }).catch((e) => {
             setSubmitting(false)
