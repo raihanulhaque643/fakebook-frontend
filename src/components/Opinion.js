@@ -42,7 +42,27 @@ const Opinion = ({ opinionId, author, firstName, lastName, image, description, a
     }
 
     const handleDisagree = () => {
+        console.log(JSON.parse(localStorage.getItem('user'))._id + ' has disagreed to' + opinionId )
 
+        let formData = {};
+
+        formData['userId'] = JSON.parse(localStorage.getItem('user'))._id
+
+        console.log(formData)
+
+        axios({
+            url: `https://fakebook-backend-643.herokuapp.com/opinion/disagree/${opinionId}`,
+            method: 'PATCH',
+            headers: {
+                authorization: myToken
+            },
+            body: formData
+        }).then((response) => {
+            console.log(response)
+        }).catch((e) => {
+            console.log('could not write to database')
+            console.log(e.response.data)
+        })
     }
 
     return (
