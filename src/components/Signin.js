@@ -31,7 +31,7 @@ const Signin = ({ setToken, toggleForm }) => {
     }
 
     return (
-        <div className="flex h-screen bg-blue-200">
+        <div className="flex min-h-screen max-h-auto bg-blue-200 p-5">
           <div className="w-full max-w-xs m-auto bg-blue-100 rounded p-5">
             <Formik
        initialValues={{ email: '', password: '' }}
