@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DeleteModal } from './DeleteModal'
 import axios from 'axios';
 
-const Opinion = ({ opinionId, author, firstName, lastName, image, description, agreements, disagreements, date, owner, setReFetchOpinions }) => {
+const Opinion = ({ opinionId, author, firstName, lastName, image, description, agreements, disagreements, agree, disagree, date, owner, setReFetchOpinions }) => {
 
     const [signedInUser, setSignedInUser] = useState(JSON.parse(localStorage.getItem('user')))
+
+    const [agreed, setAgreed] = useState(agree.includes( JSON.parse(localStorage.getItem('user'))._id))
+    const [disagreed, setDisagreed] = useState(disagree.includes( JSON.parse(localStorage.getItem('user'))._id))
+
+    const [agreeCount, setAgreeCount] = useState(agreements)
+    const [disagreeCount, setDisagreeCount] = useState(disagreements)
 
     const dateHolder = new Date(date)
     const dd = dateHolder.getDate();
@@ -17,6 +23,28 @@ const Opinion = ({ opinionId, author, firstName, lastName, image, description, a
     const myToken = localStorage.getItem('token')
 
     const handleAgree = () => {
+
+        if(agreed) {
+            setAgreed(false)
+            setDisagreed(false)
+        } else {
+            setAgreed(true)
+            setDisagreed(false)
+        }
+
+        if(agreed) {
+            let newCount = agreeCount - 1;
+            setAgreeCount(newCount)
+        } else if (!agreed && !disagreed) {
+            let newCount = agreeCount + 1;
+            setAgreeCount(newCount)
+        } else if (!agreed && disagreed) {
+            let newCount = agreeCount + 1;
+            setAgreeCount(newCount);
+            let newCount2 = disagreeCount - 1;
+            setDisagreeCount(newCount2);
+        }
+
         console.log(JSON.parse(localStorage.getItem('user'))._id + ' has agreed to' + opinionId )
 
         let formData = {};
@@ -42,6 +70,29 @@ const Opinion = ({ opinionId, author, firstName, lastName, image, description, a
     }
 
     const handleDisagree = () => {
+
+        if(disagreed) {
+            setAgreed(false)
+            setDisagreed(false)
+        } else {
+            setDisagreed(true)
+            setAgreed(false)
+        }
+
+        if(disagreed) {
+            let newCount = disagreeCount - 1;
+            setDisagreeCount(newCount)
+        } else if (!disagreed && !agreed) {
+            let newCount = disagreeCount + 1;
+            setDisagreeCount(newCount)
+        } else if (!disagreed && agreed) {
+            let newCount = agreeCount - 1;
+            setAgreeCount(newCount);
+            let newCount2 = disagreeCount + 1;
+            setDisagreeCount(newCount2);
+        }
+
+
         console.log(JSON.parse(localStorage.getItem('user'))._id + ' has disagreed to' + opinionId )
 
         let formData = {};
@@ -92,14 +143,18 @@ const Opinion = ({ opinionId, author, firstName, lastName, image, description, a
                     <div className="">
                         <button
                         onClick={() => handleAgree()}
-                        className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 mr-4 border rounded shadow focus:outline-none text-green-600">Agree</button>
+                        className={`bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 mr-4 border rounded shadow focus:outline-none text-green-600
+                        ${agreed ? 'bg-green-100 border-green-500': ''}
+                        `}>Agree</button>
                         <button
                         onClick={() => handleDisagree()}
-                        className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 mr-0 border rounded shadow focus:outline-none text-red-600">Disagree</button>
+                        className={`bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 mr-0 border rounded shadow focus:outline-none text-red-600
+                        ${disagreed ? 'bg-red-100 border-red-500': ''}
+                        `}>Disagree</button>
                     </div>
                     <div className="flex flex-row">
-                        <div className="py-2 px-4 font-semibold rounded bg-green-600 mr-4 text-white">{agreements}</div>
-                        <div className="py-2 px-4 font-semibold rounded bg-red-600 mr-0 text-white">{disagreements}</div>
+                        <div className="py-2 px-4 font-semibold rounded bg-green-600 mr-4 text-white">{agreeCount}</div>
+                        <div className="py-2 px-4 font-semibold rounded bg-red-600 mr-0 text-white">{disagreeCount}</div>
                     </div>
                 </div>
             </div>

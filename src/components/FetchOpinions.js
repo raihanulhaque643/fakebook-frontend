@@ -87,6 +87,8 @@ const FetchOpinions = ({ route, reFetchOpinions, setReFetchOpinions }) => {
                 date={opinion.updatedAt}
                 owner={opinion.owner}
                 description={opinion.description}
+                agree={opinion.agree}
+                disagree={opinion.disagree}
                 agreements={opinion.agree.length}
                 disagreements={opinion.disagree.length}
                 setReFetchOpinions={setReFetchOpinions}
